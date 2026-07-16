@@ -1,137 +1,115 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>发布我的愿望 | EchoCity</title>
-
-<style>
-body{
-font-family:Arial,sans-serif;
-background:#f5f5f5;
-margin:0;
-padding:40px;
-}
-
-.container{
-max-width:900px;
-margin:auto;
-background:white;
-padding:40px;
-border-radius:12px;
-}
-
-h1{
-font-size:42px;
-margin-bottom:10px;
-}
-
-p{
-color:#666;
-}
-
-label{
-display:block;
-margin-top:30px;
-font-weight:bold;
-}
-
-textarea{
-width:100%;
-height:90px;
-padding:12px;
-font-size:16px;
-}
-
-button{
-margin-top:40px;
-background:#222;
-color:white;
-padding:16px 40px;
-font-size:18px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-}
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>发布我的愿望 | EchoCity</title>
+  <style>
+    *{box-sizing:border-box}
+    body{font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif;background:#f5f5f5;margin:0;padding:40px 20px;color:#111}
+    .container{max-width:900px;margin:auto;background:#fff;padding:40px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+    h1{font-size:42px;margin:0 0 10px}
+    .intro{color:#666;margin-bottom:30px}
+    label{display:block;margin-top:28px;margin-bottom:8px;font-weight:700;font-size:18px}
+    textarea{width:100%;min-height:120px;padding:14px;font-size:17px;border:1px solid #ddd;border-radius:10px;resize:vertical}
+    button{margin-top:36px;background:#222;color:#fff;padding:16px 36px;font-size:18px;border:0;border-radius:10px;cursor:pointer}
+    #message{display:none;margin-top:20px;padding:12px 16px;background:#fff4d8;border-radius:8px}
+    #result{display:none;margin-top:40px;padding:30px;background:#f2f2f2;border-radius:12px}
+    .back{display:inline-block;margin-bottom:24px;color:#333;text-decoration:none}
+    @media(max-width:640px){body{padding:20px 12px}.container{padding:24px 18px}h1{font-size:34px}}
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <a class="back" href="index.html">← 返回 EchoCity</a>
+    <h1>发布我的愿望</h1>
+    <p class="intro">每一个伟大的故事，都始于一个真实的愿望。</p>
 
-<div class="container">
+    <form id="wishForm">
+      <label for="wish">1. 你的愿望是什么？</label>
+      <textarea id="wish" required></textarea>
 
-  <h1>发布我的愿望</h1>
+      <label for="importance">2. 为什么它对你重要？</label>
+      <textarea id="importance"></textarea>
 
-  <p>
-    每一个伟大的故事，都始于一个真实的愿望。
-  </p>
+      <label for="difficulty">3. 你现在最大的困难是什么？</label>
+      <textarea id="difficulty"></textarea>
 
-  <label>1. 你的愿望是什么？</label>
-  <textarea id="wish"></textarea>
+      <label for="companion">4. 希望谁与你同行？</label>
+      <textarea id="companion"></textarea>
 
-  <label>2. 为什么它对你重要？</label>
-  <textarea id="importance"></textarea>
+      <label for="firstStep">5. 第一步准备做什么？</label>
+      <textarea id="firstStep"></textarea>
 
-  <label>3. 你现在最大的困难是什么？</label>
-  <textarea id="difficulty"></textarea>
+      <button type="submit">发布我的愿望</button>
+    </form>
 
-  <label>4. 希望谁与你同行？</label>
-  <textarea id="companion"></textarea>
+    <div id="message"></div>
 
-  <label>5. 第一步准备做什么？</label>
-  <textarea id="firstStep"></textarea>
-
-  <button type="button" onclick="publishWish()">
-    发布我的愿望
-  </button>
-
-  <div
-    id="result"
-    style="display:none;margin-top:40px;padding:30px;background:#f2f2f2;border-radius:12px;"
-  >
-    <h2>我的愿望卡片</h2>
-    <div id="wishCard"></div>
+    <section id="result" aria-live="polite">
+      <h2>我的愿望卡片</h2>
+      <div id="wishCard"></div>
+    </section>
   </div>
 
-<script>
-function publishWish() {
-  const wish = document.getElementById("wish").value.trim();
-  const importance = document.getElementById("importance").value.trim();
-  const difficulty = document.getElementById("difficulty").value.trim();
-  const companion = document.getElementById("companion").value.trim();
-  const firstStep = document.getElementById("firstStep").value.trim();
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("wishForm");
+      const result = document.getElementById("result");
+      const wishCard = document.getElementById("wishCard");
+      const message = document.getElementById("message");
 
-  if (!wish) {
-    alert("请先填写你的愿望。");
-    return;
-  }
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
 
-  const data = {
-    wish: wish,
-    importance: importance,
-    difficulty: difficulty,
-    companion: companion,
-    firstStep: firstStep,
-    createdAt: new Date().toLocaleString()
-  };
+        const wish = document.getElementById("wish").value.trim();
+        const importance = document.getElementById("importance").value.trim();
+        const difficulty = document.getElementById("difficulty").value.trim();
+        const companion = document.getElementById("companion").value.trim();
+        const firstStep = document.getElementById("firstStep").value.trim();
 
-  localStorage.setItem("echocityWish", JSON.stringify(data));
+        if (!wish) {
+          message.textContent = "请先填写你的愿望。";
+          message.style.display = "block";
+          document.getElementById("wish").focus();
+          return;
+        }
 
-  document.getElementById("wishCard").innerHTML = `
-    <p><strong>愿望：</strong>${wish}</p>
-    <p><strong>为什么重要：</strong>${importance || "未填写"}</p>
-    <p><strong>当前困难：</strong>${difficulty || "未填写"}</p>
-    <p><strong>希望谁同行：</strong>${companion || "未填写"}</p>
-    <p><strong>第一步：</strong>${firstStep || "未填写"}</p>
-    <p><small>发布时间：${data.createdAt}</small></p>
-  `;
+        const data = {
+          wish: wish,
+          importance: importance,
+          difficulty: difficulty,
+          companion: companion,
+          firstStep: firstStep,
+          createdAt: new Date().toLocaleString("zh-CN")
+        };
 
-  const result = document.getElementById("result");
-  result.style.display = "block";
-  result.scrollIntoView({ behavior: "smooth" });
-}
-</script>
+        try {
+          localStorage.setItem("echocityWish", JSON.stringify(data));
+        } catch (error) {}
 
+        wishCard.innerHTML =
+          "<p><strong>愿望：</strong>" + safe(wish) + "</p>" +
+          "<p><strong>为什么重要：</strong>" + safe(importance || "未填写") + "</p>" +
+          "<p><strong>当前困难：</strong>" + safe(difficulty || "未填写") + "</p>" +
+          "<p><strong>希望谁同行：</strong>" + safe(companion || "未填写") + "</p>" +
+          "<p><strong>第一步：</strong>" + safe(firstStep || "未填写") + "</p>" +
+          "<p><small>发布时间：" + safe(data.createdAt) + "</small></p>";
+
+        message.style.display = "none";
+        result.style.display = "block";
+        result.scrollIntoView({behavior:"smooth",block:"start"});
+      });
+
+      function safe(value) {
+        return String(value)
+          .replace(/&/g,"&amp;")
+          .replace(/</g,"&lt;")
+          .replace(/>/g,"&gt;")
+          .replace(/"/g,"&quot;")
+          .replace(/'/g,"&#039;");
+      }
+    });
+  </script>
 </body>
 </html>
