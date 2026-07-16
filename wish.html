@@ -38,7 +38,65 @@
       <label for="companion">4. 希望谁与你同行？</label>
       <textarea id="companion"></textarea>
 
-      <label for="firstStep">5. 第一步准备做什么？</label>
+ <script>
+const SUPABASE_URL = "https://fhckjaidiqnozhpxkavt.supabase.co";
+const SUPABASE_KEY = "sb_publishable_g--rklRl7JhuX2RsA5L-ow_wi5w9tYa";
+
+async function publishWish() {
+
+    const wish = document.getElementById("wish").value.trim();
+    const importance = document.getElementById("importance").value.trim();
+    const difficulty = document.getElementById("difficulty").value.trim();
+    const companion = document.getElementById("companion").value.trim();
+    const firstStep = document.getElementById("firstStep").value.trim();
+
+    if (!wish) {
+        alert("请填写愿望");
+        return;
+    }
+
+    const response = await fetch(
+        SUPABASE_URL + "/rest/v1/wishes",
+        {
+            method: "POST",
+            headers: {
+                "apikey": SUPABASE_KEY,
+                "Authorization": "Bearer " + SUPABASE_KEY,
+                "Content-Type": "application/json",
+                "Prefer": "return=representation"
+            },
+            body: JSON.stringify({
+                wish: wish,
+                importance: importance,
+                difficulty: difficulty,
+                companion: companion,
+                first_step: firstStep
+            })
+        }
+    );
+
+    if (!response.ok) {
+        const err = await response.text();
+        alert("发布失败：" + err);
+        return;
+    }
+
+    const rows = await response.json();
+
+    const item = rows[0];
+
+    document.getElementById("wishCard").innerHTML = `
+        <p><b>愿望：</b>${item.wish}</p>
+        <p><b>重要性：</b>${item.importance}</p>
+        <p><b>困难：</b>${item.difficulty}</p>
+        <p><b>同行者：</b>${item.companion}</p>
+        <p><b>第一步：</b>${item.first_step}</p>
+        <p><b>发布时间：</b>${new Date(item.created_at).toLocaleString()}</p>
+    `;
+
+    document.getElementById("result").style.display = "block";
+}
+</script>     <label for="firstStep">5. 第一步准备做什么？</label>
       <textarea id="firstStep"></textarea>
 
       <button type="submit">发布我的愿望</button>
@@ -52,64 +110,6 @@
     </section>
   </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const form = document.getElementById("wishForm");
-      const result = document.getElementById("result");
-      const wishCard = document.getElementById("wishCard");
-      const message = document.getElementById("message");
-
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
-
-        const wish = document.getElementById("wish").value.trim();
-        const importance = document.getElementById("importance").value.trim();
-        const difficulty = document.getElementById("difficulty").value.trim();
-        const companion = document.getElementById("companion").value.trim();
-        const firstStep = document.getElementById("firstStep").value.trim();
-
-        if (!wish) {
-          message.textContent = "请先填写你的愿望。";
-          message.style.display = "block";
-          document.getElementById("wish").focus();
-          return;
-        }
-
-        const data = {
-          wish: wish,
-          importance: importance,
-          difficulty: difficulty,
-          companion: companion,
-          firstStep: firstStep,
-          createdAt: new Date().toLocaleString("zh-CN")
-        };
-
-        try {
-          localStorage.setItem("echocityWish", JSON.stringify(data));
-        } catch (error) {}
-
-        wishCard.innerHTML =
-          "<p><strong>愿望：</strong>" + safe(wish) + "</p>" +
-          "<p><strong>为什么重要：</strong>" + safe(importance || "未填写") + "</p>" +
-          "<p><strong>当前困难：</strong>" + safe(difficulty || "未填写") + "</p>" +
-          "<p><strong>希望谁同行：</strong>" + safe(companion || "未填写") + "</p>" +
-          "<p><strong>第一步：</strong>" + safe(firstStep || "未填写") + "</p>" +
-          "<p><small>发布时间：" + safe(data.createdAt) + "</small></p>";
-
-        message.style.display = "none";
-        result.style.display = "block";
-        result.scrollIntoView({behavior:"smooth",block:"start"});
-      });
-
-      function safe(value) {
-        return String(value)
-          .replace(/&/g,"&amp;")
-          .replace(/</g,"&lt;")
-          .replace(/>/g,"&gt;")
-          .replace(/"/g,"&quot;")
-          .replace(/'/g,"&#039;");
-      }
-    });
-  </script>
+  
 </body>
 </html>
