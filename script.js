@@ -1,58 +1,60 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("residentForm");
-  const button = document.getElementById("submitResidentApplication");
-  const message = document.getElementById("formMessage");
 
-  if (!form || !button || !message) return;
+const header = document.querySelector(".site-header");
+const nav = document.querySelector(".main-nav");
+const menuButton = document.querySelector(".menu-toggle");
+const languageButton = document.querySelector(".language-switch");
+const langEn = document.querySelector(".lang-en");
+const langZh = document.querySelector(".lang-zh");
 
-  function showMessage(text, type) {
-    message.className = `form-message ${type}`;
-    message.textContent = text;
-  }
+window.addEventListener("scroll", () => {
+  header.classList.toggle("scrolled", window.scrollY > 40);
+});
 
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
+menuButton.addEventListener("click", () => {
+  const open = nav.classList.toggle("open");
+  menuButton.setAttribute("aria-expanded", String(open));
+});
 
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      showMessage(
-        "Please complete all required fields and agree to the community rules. / 请完整填写必填项目并勾选同意社区规则。",
-        "error"
-      );
-      return;
-    }
-
-    button.disabled = true;
-    button.textContent = "Submitting...";
-
-    const application = Object.fromEntries(new FormData(form).entries());
-    application.submittedAt = new Date().toISOString();
-
-    try {
-      const existing = JSON.parse(
-        localStorage.getItem("echocityResidentApplications") || "[]"
-      );
-      existing.push(application);
-      localStorage.setItem(
-        "echocityResidentApplications",
-        JSON.stringify(existing)
-      );
-
-      showMessage(
-        "Application submitted successfully. / 申请已成功提交。",
-        "success"
-      );
-      form.reset();
-    } catch (error) {
-      console.error(error);
-      showMessage(
-        "The application could not be saved in this browser. Please try again. / 当前浏览器无法保存申请，请重试。",
-        "error"
-      );
-    } finally {
-      button.disabled = false;
-      button.textContent = "Submit Resident Application";
-      message.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
+nav.querySelectorAll("a").forEach(link => {
+  link.addEventListener("click", () => {
+    nav.classList.remove("open");
+    menuButton.setAttribute("aria-expanded", "false");
   });
 });
+
+function setLanguage(lang) {
+  document.documentElement.dataset.lang = lang;
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+  document.querySelectorAll("[data-en][data-zh]").forEach(el => {
+    el.textContent = el.dataset[lang];
+  });
+  langEn.classList.toggle("active", lang === "en");
+  langZh.classList.toggle("active", lang === "zh");
+  localStorage.setItem("echocity-language", lang);
+}
+
+languageButton.addEventListener("click", () => {
+  const current = document.documentElement.dataset.lang;
+  setLanguage(current === "en" ? "zh" : "en");
+});
+
+setLanguage(localStorage.getItem("echocity-language") || "en");
+
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.14 });
+
+document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
+
+const slides = [...document.querySelectorAll(".hero-bg")];
+let slideIndex = 0;
+setInterval(() => {
+  slides[slideIndex].classList.remove("active");
+  slideIndex = (slideIndex + 1) % slides.length;
+  slides[slideIndex].classList.add("active");
+}, 7000);
