@@ -48,8 +48,30 @@
         <label for="applicantName">你的姓名或昵称</label>
         <input id="applicantName" type="text" required placeholder="例如：Peter">
 
-        <label for="applicantContact">联系方式</label>
-        <input id="applicantContact" type="text" required placeholder="邮箱、微信或其他联系方式">
+        <label for="contactType">联系方式类型 / Contact method</label>
+
+<select id="contactType" required>
+  <option value="">请选择 / Select</option>
+  <option value="email">Email</option>
+  <option value="whatsapp">WhatsApp</option>
+  <option value="telegram">Telegram</option>
+  <option value="wechat">WeChat</option>
+  <option value="linkedin">LinkedIn</option>
+  <option value="instagram">Instagram</option>
+  <option value="x">X / Twitter</option>
+  <option value="discord">Discord</option>
+  <option value="website">Personal Website</option>
+  <option value="other">其他 / Other</option>
+</select>
+
+<label for="applicantContact">联系方式 / Contact details</label>
+
+<input
+  id="applicantContact"
+  type="text"
+  required
+  placeholder="请先选择联系方式类型 / Select a contact method first"
+>
 
         <label for="applicantMessage">你想对愿望发起人说什么？</label>
         <textarea id="applicantMessage" required placeholder="请说明你为什么愿意同行，以及你能提供什么帮助。"></textarea>
@@ -193,6 +215,37 @@
       }
     });
 
+    const contactType = document.getElementById("contactType");
+const applicantContact = document.getElementById("applicantContact");
+
+const contactPlaceholders = {
+  email: "name@example.com",
+  whatsapp: "+1 555 123 4567",
+  telegram: "@username",
+  wechat: "WeChat ID",
+  linkedin: "linkedin.com/in/username",
+  instagram: "@username",
+  x: "@username",
+  discord: "username",
+  website: "https://example.com",
+  other: "请输入其他联系方式 / Enter contact details"
+};
+
+contactType.addEventListener("change", () => {
+  applicantContact.value = "";
+
+  applicantContact.placeholder =
+    contactPlaceholders[contactType.value] ||
+    "请先选择联系方式类型 / Select a contact method first";
+
+  if (contactType.value === "email") {
+    applicantContact.type = "email";
+  } else if (contactType.value === "whatsapp") {
+    applicantContact.type = "tel";
+  } else {
+    applicantContact.type = "text";
+  }
+});
     applicationForm.addEventListener("submit", async (event) => {
       event.preventDefault();
 
@@ -200,6 +253,7 @@
         wish_id: Number(document.getElementById("applicationWishId").value),
         name: document.getElementById("applicantName").value.trim(),
         message: document.getElementById("applicantMessage").value.trim(),
+       contact_type: document.getElementById("contactType").value,
         contact: document.getElementById("applicantContact").value.trim()
       };
 
