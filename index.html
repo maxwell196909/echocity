@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="EchoCity — a living digital city shaped by human choice, shared memory, and meaningful relationships." />
+  <title>EchoCity</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="EchoCity home">EchoCity</a>
+    <nav aria-label="Primary navigation">
+      <a href="#about">About</a>
+      <a href="#vision">Vision</a>
+      <a href="#values">Values</a>
+      <a href="#resident">Become a Resident</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="section cream" id="about">
+      <div class="section-label">01 · ABOUT</div>
+      <div class="split">
+        <h1>Not an app.<br>A living<br>network.</h1>
+        <div class="copy">
+          <p>Most digital products connect information, content, or messages. EchoCity is designed around continuous life.</p>
+          <p>Yesterday remains connected to today. Relationships gain history. Choices create consequences. Ordinary people leave memories.</p>
+          <p>它不是一次性体验，也不是普通聊天工具。它是一座会记住居民、关系和城市历史的数字城市。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section sage" id="vision">
+      <div class="section-label">02 · VISION</div>
+      <h2>A second place for meaningful life.</h2>
+      <div class="cards four">
+        <article class="card">
+          <span>01</span>
+          <h3>Persistent Life</h3>
+          <p>The world continues even when you are offline.</p>
+        </article>
+        <article class="card">
+          <span>02</span>
+          <h3>Shared Memory</h3>
+          <p>Actions, promises, and relationships become part of the city's history.</p>
+        </article>
+        <article class="card">
+          <span>03</span>
+          <h3>Human Choice</h3>
+          <p>AI supports the city, but people decide how life unfolds.</p>
+        </article>
+        <article class="card">
+          <span>04</span>
+          <h3>Civilization</h3>
+          <p>Different cultures can coexist through dignity, responsibility, and dialogue.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section cream" id="values">
+      <div class="section-label">03 · CIVILIZATION VALUES</div>
+      <h2>Different cultures. Shared life.</h2>
+      <p class="lead">EchoCity does not ask everyone to become the same. It asks whether people with different backgrounds can live together with dignity and responsibility.</p>
+      <div class="cards four">
+        <article class="card"><h3>Dignity</h3><p>Every resident is treated as a person, not a data point.</p></article>
+        <article class="card"><h3>Responsibility</h3><p>Choices matter and become part of the shared story.</p></article>
+        <article class="card"><h3>Dialogue</h3><p>Differences are addressed through honest conversation.</p></article>
+        <article class="card"><h3>Mutual Growth</h3><p>Residents and the city develop together over time.</p></article>
+      </div>
+    </section>
+
+    <section class="section sage resident-grid" id="resident">
+      <div class="resident-copy">
+        <div class="section-label">04 · BECOME A RESIDENT</div>
+        <h2>Apply to become one of the first residents.</h2>
+        <p>You will create a second identity, receive a home and a role, and begin your first day in EchoCity.</p>
+        <p class="muted">Alpha 0.1 · Invitation-based adult test · No real-money transactions</p>
+      </div>
+
+      <form id="residentForm" class="resident-form">
+        <label>
+          <span>Virtual Name / 虚拟姓名</span>
+          <input name="virtualName" type="text" required />
+        </label>
+
+        <label>
+          <span>Age / 年龄</span>
+          <input name="age" type="number" min="18" max="120" required />
+        </label>
+
+        <label>
+          <span>Role / 希望从事的职业</span>
+          <select name="role" required>
+            <option value="">Select a role</option>
+            <option>Architect / 建筑师</option>
+            <option>Engineer / 工程师</option>
+            <option>Teacher / 教师</option>
+            <option>Artist / 艺术家</option>
+            <option>Doctor / 医生</option>
+            <option>Community Builder / 社区建设者</option>
+            <option>Other / 其他</option>
+          </select>
+        </label>
+
+        <label>
+          <span>What kind of life do you want here? / 你希望在这里过怎样的生活？</span>
+          <textarea name="life" required></textarea>
+        </label>
+
+        <label>
+          <span>What can you contribute? / 你愿意为社区贡献什么？</span>
+          <textarea name="contribution" required></textarea>
+        </label>
+
+        <label>
+          <span>Which value matters most to you? / 你最看重的文明价值</span>
+          <select name="value" required>
+            <option value="">Select a value</option>
+            <option>Mutual Growth / 共同成长</option>
+            <option>Dignity / 尊严</option>
+            <option>Responsibility / 责任</option>
+            <option>Dialogue / 对话</option>
+          </select>
+        </label>
+
+        <label class="check-row">
+          <input name="agree" type="checkbox" required />
+          <span>I understand this is an Alpha product test and agree to the community rules.</span>
+        </label>
+
+        <button id="submitResidentApplication" type="submit">Submit Resident Application</button>
+        <div id="formMessage" class="form-message" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section class="section cream" id="contact">
+      <div class="section-label">05 · CONTACT</div>
+      <h2>Help shape the first version of EchoCity.</h2>
+      <p class="lead">For early collaboration, community ideas, or technical participation, contact the founding team.</p>
+      <a class="contact-link" href="mailto:contact@echocity.org">contact@echocity.org</a>
+    </section>
+  </main>
+
+  <footer>
+    <span>© 2026 EchoCity</span>
+    <span>Alpha 0.1</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
