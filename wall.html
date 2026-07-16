@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>愿望广场｜EchoCity</title>
-  <link rel="stylesheet" href="style.css?v=20260716-3">
+  <link rel="stylesheet" href="style.css?v=20260716-4">
 </head>
 <body class="inner-page wall-page">
   <header class="simple-header">
@@ -92,6 +92,10 @@
                 </div>
               </div>
 
+              <div class="wish-card-actions">
+                <button class="companion-button" type="button" data-wish-id="${item.id}" data-wish-text="${escapeAttribute(item.wish)}">我愿意同行</button>
+              </div>
+
               <div class="wish-card-footer">
                 <span>愿望编号 EC-${String(item.id).padStart(4, "0")}</span>
                 <span class="wish-visible-badge">公开可见</span>
@@ -99,6 +103,7 @@
             </article>
           `;
         }).join("");
+        bindCompanionButtons();
       } catch (error) {
         count.textContent = "愿望读取失败";
         status.textContent = error.message;
@@ -158,8 +163,31 @@
         .replaceAll("'", "&#039;");
     }
 
+\n    const modal = document.getElementById("applicationModal");\n    const applicationForm = document.getElementById("applicationForm");\n    const applicationMessage = document.getElementById("applicationMessage");\n    const applicationButton = document.getElementById("applicationSubmitButton");\n\n    function bindCompanionButtons() {\n      document.querySelectorAll(".companion-button").forEach((button) => {\n        button.addEventListener("click", () => {\n          applicationForm.reset();\n          document.getElementById("applicationWishId").value = button.dataset.wishId;\n          document.getElementById("selectedWishText").textContent = `申请同行的愿望：${button.dataset.wishText}`;\n          applicationMessage.textContent = "";\n          modal.hidden = false;\n          document.body.classList.add("modal-open");\n        });\n      });\n    }\n\n    document.querySelectorAll("[data-close-modal]").forEach((element) => {\n      element.addEventListener("click", () => {\n        modal.hidden = true;\n        document.body.classList.remove("modal-open");\n      });\n    });\n\n    applicationForm.addEventListener("submit", async (event) => {\n      event.preventDefault();\n      const payload = {\n        wish_id: Number(document.getElementById("applicationWishId").value),\n        name: document.getElementById("applicantName").value.trim(),\n        message: document.getElementById("applicantMessage").value.trim(),\n        contact: document.getElementById("applicantContact").value.trim()\n      };\n      applicationButton.disabled = true;\n      applicationButton.textContent = "正在提交……";\n      applicationMessage.textContent = "正在把你的同行申请送往 EchoCity……";\n      applicationMessage.classList.remove("error");\n      try {\n        const response = await fetch(`${SUPABASE_URL}/rest/v1/applications`, {\n          method: "POST",\n          headers: {\n            "Content-Type": "application/json",\n            "apikey": SUPABASE_KEY,\n            "Authorization": `Bearer ${SUPABASE_KEY}`,\n            "Prefer": "return=representation"\n          },\n          body: JSON.stringify(payload)\n        });\n        const data = await response.json();\n        if (!response.ok) throw new Error(data.message || data.details || "提交失败");\n        applicationMessage.textContent = "提交成功。你的同行申请已经进入 EchoCity。";\n        setTimeout(() => {\n          modal.hidden = true;\n          document.body.classList.remove("modal-open");\n          applicationButton.textContent = "提交同行申请";\n        }, 1600);\n      } catch (error) {\n        applicationMessage.textContent = `提交失败：${error.message}`;\n        applicationMessage.classList.add("error");\n      } finally {\n        applicationButton.disabled = false;\n      }\n    });\n\n    function escapeAttribute(value) {\n      return escapeHtml(value).replaceAll("`", "&#096;");\n    }\n
     loadWishes();
     setInterval(loadWishes, 60000);
   </script>
+
+  <div id="applicationModal" class="application-modal" hidden>
+    <div class="application-backdrop" data-close-modal></div>
+    <section class="application-dialog" role="dialog" aria-modal="true" aria-labelledby="applicationTitle">
+      <button class="modal-close" type="button" aria-label="关闭" data-close-modal>×</button>
+      <p class="eyebrow">WALK TOGETHER</p>
+      <h2 id="applicationTitle">我愿意同行</h2>
+      <p id="selectedWishText" class="selected-wish-text"></p>
+      <form id="applicationForm">
+        <input id="applicationWishId" type="hidden">
+        <label for="applicantName">你的姓名或昵称</label>
+        <input id="applicantName" type="text" required placeholder="例如：Peter">
+        <label for="applicantContact">联系方式</label>
+        <input id="applicantContact" type="text" required placeholder="邮箱、微信或其他联系方式">
+        <label for="applicantMessage">你想对愿望发起人说什么？</label>
+        <textarea id="applicantMessage" required placeholder="请说明你为什么愿意同行，以及你能提供什么帮助。"></textarea>
+        <button id="applicationSubmitButton" class="btn btn-primary application-submit" type="submit">提交同行申请</button>
+        <p id="applicationMessage" class="form-message" aria-live="polite"></p>
+      </form>
+    </section>
+  </div>
+
 </body>
 </html>
