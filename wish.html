@@ -3,140 +3,224 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>发布我的愿望｜EchoCity</title>
-  <link rel="stylesheet" href="style.css?v=20260716-2">
+
+  <title>建立我的数字身份 | EchoCity</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .identity-page {
+      min-height: 100vh;
+      padding: 120px 24px 60px;
+      background:
+        linear-gradient(rgba(12, 18, 24, 0.78), rgba(12, 18, 24, 0.88)),
+        url("hero-city.jpg") center/cover fixed;
+    }
+
+    .identity-container {
+      width: min(760px, 100%);
+      margin: 0 auto;
+      padding: 44px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 24px;
+      background: rgba(18, 26, 34, 0.88);
+      color: white;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+      backdrop-filter: blur(14px);
+    }
+
+    .identity-back {
+      display: inline-block;
+      margin-bottom: 30px;
+      color: #f5c451;
+      text-decoration: none;
+    }
+
+    .identity-title {
+      margin: 0 0 14px;
+      font-size: clamp(36px, 6vw, 64px);
+      line-height: 1.05;
+    }
+
+    .identity-intro {
+      margin-bottom: 36px;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.8;
+    }
+
+    .identity-form {
+      display: grid;
+      gap: 24px;
+    }
+
+    .identity-field {
+      display: grid;
+      gap: 10px;
+    }
+
+    .identity-field label {
+      font-weight: 700;
+    }
+
+    .identity-field input,
+    .identity-field textarea,
+    .identity-field select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 15px 16px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.08);
+      color: white;
+      font: inherit;
+      outline: none;
+    }
+
+    .identity-field textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .identity-field input:focus,
+    .identity-field textarea:focus,
+    .identity-field select:focus {
+      border-color: #f5c451;
+    }
+
+    .identity-submit {
+      padding: 16px 22px;
+      border: 0;
+      border-radius: 999px;
+      background: #f5c451;
+      color: #171717;
+      font-size: 17px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .identity-note {
+      display: none;
+      margin-top: 24px;
+      padding: 18px;
+      border-radius: 14px;
+      background: rgba(245,196,81,0.14);
+      color: #ffe6a3;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 640px) {
+      .identity-container {
+        padding: 28px 20px;
+      }
+    }
+  </style>
 </head>
-<body class="inner-page">
-  <header class="simple-header">
-    <a class="brand" href="index.html"><span class="brand-mark">E</span><span>EchoCity</span></a>
-    <a class="text-link" href="wall.html">愿望广场 →</a>
-  </header>
 
-  <main class="form-shell">
-    <section class="form-card">
-      <p class="eyebrow">START YOUR JOURNEY</p>
-      <h1>发布我的愿望</h1>
-      <p class="intro">每一个伟大的故事，都始于一个真实的愿望。</p>
+<body>
 
-      <form id="wishForm">
-        <label for="wish">1. 你的愿望是什么？</label>
-        <textarea id="wish" required placeholder="请写下一个对你真正重要、愿意开始行动的愿望。"></textarea>
+  <main class="identity-page">
 
-        <label for="importance">2. 为什么它对你重要？</label>
-        <textarea id="importance" placeholder="它与你的人生、家庭、信念或未来有什么关系？"></textarea>
+    <section class="identity-container">
 
-        <label for="difficulty">3. 你现在最大的困难是什么？</label>
-        <textarea id="difficulty" placeholder="资金、能力、时间、信息、资源，还是缺少同行者？"></textarea>
+      <a class="identity-back" href=" ">
+        ← 返回 EchoCity
+      </a >
 
-        <label for="companion">4. 希望谁与你同行？</label>
-        <textarea id="companion" placeholder="你希望遇见什么样的人？"></textarea>
+      <p>YOUR FIRST STEP IN ECHOCITY</p >
 
-        <label for="firstStep">5. 第一步准备做什么？</label>
-        <textarea id="firstStep" placeholder="写下一个今天、明天或本周就能开始的小行动。"></textarea>
+      <h1 class="identity-title">
+        建立我的数字身份
+      </h1>
 
-        <button id="publishButton" class="btn btn-primary submit-button" type="submit">发布我的愿望</button>
-        <p id="message" class="form-message" aria-live="polite"></p>
+      <p class="identity-intro">
+        在 EchoCity，身份不只是一组账号和密码。
+        它是你是谁、你珍视什么、你希望怎样生活的真实记录。
+      </p >
+
+      <form class="identity-form" id="identityForm">
+
+        <div class="identity-field">
+          <label for="name">你的名字</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            placeholder="请输入你的名字"
+            required
+          >
+        </div>
+
+        <div class="identity-field">
+          <label for="identity">你如何描述自己</label>
+          <textarea
+            id="identity"
+            name="identity"
+            placeholder="例如：父亲、工程师、基督徒、学习者、城市建设者……"
+            required
+          ></textarea>
+        </div>
+
+        <div class="identity-field">
+          <label for="purpose">你为什么来到 EchoCity</label>
+          <textarea
+            id="purpose"
+            name="purpose"
+            placeholder="写下你来到这里的原因"
+            required
+          ></textarea>
+        </div>
+
+        <div class="identity-field">
+          <label for="wish">你的第一个愿望</label>
+          <textarea
+            id="wish"
+            name="wish"
+            placeholder="你希望在这里实现什么"
+            required
+          ></textarea>
+        </div>
+
+        <button class="identity-submit" type="submit">
+          创建我的数字身份
+        </button>
+
       </form>
 
-      <section id="result" class="wish-result" hidden>
-        <p class="eyebrow">MY WISH CARD</p>
-        <h2>我的愿望卡片</h2>
-        <div id="wishCard"></div>
-        <div class="result-actions">
-          <a class="btn btn-secondary" href="wall.html">进入愿望广场</a>
-          <button class="btn btn-ghost" type="button" id="newWishButton">再发布一个愿望</button>
-        </div>
-      </section>
+      <div class="identity-note" id="identityNote">
+        你的数字身份已经在这台设备上创建。下一步，我们将把它连接到 EchoCity 的居民系统。
+      </div>
+
     </section>
+
   </main>
 
   <script>
-    const SUPABASE_URL = "https://fhckjaidiqnozhpxkavt.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_g--rklRl7JhuX2RsA5L-ow_wi5w9tYa";
+    const identityForm = document.getElementById("identityForm");
+    const identityNote = document.getElementById("identityNote");
 
-    const form = document.getElementById("wishForm");
-    const button = document.getElementById("publishButton");
-    const message = document.getElementById("message");
-    const result = document.getElementById("result");
-    const wishCard = document.getElementById("wishCard");
-
-    form.addEventListener("submit", async (event) => {
+    identityForm.addEventListener("submit", function (event) {
       event.preventDefault();
 
-      const payload = {
+      const identityData = {
+        name: document.getElementById("name").value.trim(),
+        identity: document.getElementById("identity").value.trim(),
+        purpose: document.getElementById("purpose").value.trim(),
         wish: document.getElementById("wish").value.trim(),
-        importance: document.getElementById("importance").value.trim(),
-        difficulty: document.getElementById("difficulty").value.trim(),
-        companion: document.getElementById("companion").value.trim(),
-        first_step: document.getElementById("firstStep").value.trim()
+        createdAt: new Date().toISOString()
       };
 
-      if (!payload.wish) {
-        setMessage("请先填写你的愿望。", true);
-        return;
-      }
+      localStorage.setItem(
+        "echoCityDigitalIdentity",
+        JSON.stringify(identityData)
+      );
 
-      button.disabled = true;
-      button.textContent = "正在发布……";
-      setMessage("正在把你的愿望送往 EchoCity……", false);
-
-      try {
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/wishes`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "apikey": SUPABASE_KEY,
-            "Authorization": `Bearer ${SUPABASE_KEY}`,
-            "Prefer": "return=representation"
-          },
-          body: JSON.stringify(payload)
-        });
-
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.message || data.details || "数据库写入失败");
-
-        const saved = Array.isArray(data) ? data[0] : data;
-        wishCard.innerHTML = `
-          <p><strong>愿望：</strong>${escapeHtml(saved.wish)}</p>
-          <p><strong>为什么重要：</strong>${escapeHtml(saved.importance || "未填写")}</p>
-          <p><strong>当前困难：</strong>${escapeHtml(saved.difficulty || "未填写")}</p>
-          <p><strong>希望谁同行：</strong>${escapeHtml(saved.companion || "未填写")}</p>
-          <p><strong>第一步：</strong>${escapeHtml(saved.first_step || "未填写")}</p>
-          <p><small>发布时间：${new Date(saved.created_at).toLocaleString()}</small></p>
-        `;
-
-        result.hidden = false;
-        form.hidden = true;
-        result.scrollIntoView({ behavior: "smooth", block: "start" });
-      } catch (error) {
-        setMessage(`发布失败：${error.message}`, true);
-      } finally {
-        button.disabled = false;
-        button.textContent = "发布我的愿望";
-      }
+      identityNote.style.display = "block";
+      identityNote.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
     });
-
-    document.getElementById("newWishButton").addEventListener("click", () => {
-      form.reset();
-      form.hidden = false;
-      result.hidden = true;
-      message.textContent = "";
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-
-    function setMessage(text, isError) {
-      message.textContent = text;
-      message.classList.toggle("error", isError);
-    }
-
-    function escapeHtml(value) {
-      return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
   </script>
+
 </body>
 </html>
